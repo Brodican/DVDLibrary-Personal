@@ -5,6 +5,8 @@
  */
 package sg.dvdlibrary.ui;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -208,5 +210,24 @@ public class UserIOConsoleImp implements UserIO {
         } while (true);
         
         return output;
-    }      
+    }
+    
+    public LocalDate readDate(String prompt) {
+        System.out.println(prompt);
+        Scanner s;
+        LocalDate date;
+        
+        do {            
+            try {
+                s = new Scanner(System.in);
+                date = LocalDate.parse(s.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                break;
+            } catch (Exception e) {
+                System.out.println("Format must be (dd/MM/yyyy): ");
+            }
+        } while (true);
+        
+        return date;
+    }
+    
 }

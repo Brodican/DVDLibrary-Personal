@@ -1,10 +1,11 @@
-sg\dvdlibrary\controller\DVDLibraryTestUno.class
 sg\dvdlibrary\dao\DVDLibraryPersistenceException.class
 sg\dvdlibrary\ui\UserIOConsoleImp.class
+sg\dvdlibrary\dao\DVDLibraryAuditDaoFileImp.class
 sg\dvdlibrary\ui\DVDLibraryView.class
 sg\dvdlibrary\service\DVDLibraryDataValidationException.class
 sg\dvdlibrary\dao\DVDLibraryDaoFileImp.class
 sg\dvdlibrary\controller\DVDLibraryController.class
+sg\dvdlibrary\dao\DVDLibraryAuditDao.class
 sg\dvdlibrary\dto\DVD.class
 sg\dvdlibrary\service\DVDLibraryServiceLayer.class
 sg\dvdlibrary\ui\UserIO.class

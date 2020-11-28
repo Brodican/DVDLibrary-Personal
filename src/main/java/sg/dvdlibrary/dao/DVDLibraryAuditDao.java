@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.dvdlibrary.service;
+package sg.dvdlibrary.dao;
 
 /**
  *
  * @author utkua
  */
-class DVDLibraryAuditDao {
+public interface DVDLibraryAuditDao {
+    
+    public void writeAuditEntry(String entry) throws DVDLibraryPersistenceException;
     
 }

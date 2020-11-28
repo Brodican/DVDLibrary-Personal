@@ -1,1 +1,4 @@
+sg\dvdlibrary\dao\DVDLibraryDaoStubImp.class
+sg\dvdlibrary\service\DVDLibraryServiceLayerImpTest.class
+sg\dvdlibrary\dao\DVDLibraryAuditDaoStubImpl.class
 sg\dvdlibrary\dao\DVDLibraryDaoFileImpTest.class

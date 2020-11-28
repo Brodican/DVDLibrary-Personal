@@ -6,6 +6,8 @@
 package sg.dvdlibrary.dao;
 
 import java.io.FileWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -49,7 +51,7 @@ public class DVDLibraryDaoFileImpTest {
         // Create our method test inputs
         String dvdTitle = "0001";
         DVD dvd = new DVD(dvdTitle);
-        dvd.setDate("1997");
+        dvd.setDate(LocalDate.parse("11/11/1997", DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         dvd.setMpaaRating("18");
         dvd.setDirectorName("Utku");
         dvd.setStudio("Jimmy");
@@ -81,7 +83,7 @@ public class DVDLibraryDaoFileImpTest {
         // Create our method test inputs
         String dvdTitle = "0001";
         DVD dvd = new DVD(dvdTitle);
-        dvd.setDate("1997");
+        dvd.setDate(LocalDate.parse("11/11/1997", DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         dvd.setMpaaRating("18");
         dvd.setDirectorName("Utku");
         dvd.setStudio("Jimmy");
@@ -91,14 +93,14 @@ public class DVDLibraryDaoFileImpTest {
         //  Add the dvd to the DAO
         testDao.addDVD(dvdTitle, dvd);
         
-        dvd.setDate("1992");
+        dvd.setDate(LocalDate.parse("11/11/1992", DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         dvd.setMpaaRating("16");
         dvd.setDirectorName("Utkus");
         dvd.setStudio("Jimmys");
         dvd.setNote("Note");
         dvd.setImdb(5.5);
 
-        testDao.setFieldDate("1992", dvdTitle);
+        testDao.setFieldDate(LocalDate.parse("11/11/1992", DateTimeFormatter.ofPattern("dd/MM/yyyy")), dvdTitle);
         testDao.setFieldRating("16", dvdTitle);
         testDao.setFieldDirectorName("Utkus", dvdTitle);
         testDao.setFieldStudio("Jimmys", dvdTitle);
@@ -127,7 +129,7 @@ public class DVDLibraryDaoFileImpTest {
     public void testGetAllDVDs() throws Exception {
         // Create our first DVD
         DVD firstDVD = new DVD("Kumar");
-        firstDVD.setDate("1997");
+        firstDVD.setDate(LocalDate.parse("11/11/1997", DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         firstDVD.setMpaaRating("18");
         firstDVD.setDirectorName("Utku");
         firstDVD.setStudio("Jim");
@@ -136,7 +138,7 @@ public class DVDLibraryDaoFileImpTest {
 
         // Create our second DVD
         DVD secondDVD = new DVD("Harold");
-        secondDVD.setDate("1998");
+        secondDVD.setDate(LocalDate.parse("11/11/1998", DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         secondDVD.setMpaaRating("18");
         secondDVD.setDirectorName("Utku");
         secondDVD.setStudio("Jim");
@@ -166,7 +168,7 @@ public class DVDLibraryDaoFileImpTest {
     public void testRemoveDVD() throws Exception {
         // Create our first DVD
         DVD firstDVD = new DVD("Kumar");
-        firstDVD.setDate("1997");
+        firstDVD.setDate(LocalDate.parse("11/11/1997", DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         firstDVD.setMpaaRating("18");
         firstDVD.setDirectorName("Utku");
         firstDVD.setStudio("Jim");
@@ -175,7 +177,7 @@ public class DVDLibraryDaoFileImpTest {
 
         // Create our second DVD
         DVD secondDVD = new DVD("Harold");
-        secondDVD.setDate("1998");
+        secondDVD.setDate(LocalDate.parse("11/11/1998", DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         secondDVD.setMpaaRating("18");
         secondDVD.setDirectorName("Utku");
         secondDVD.setStudio("Jim");

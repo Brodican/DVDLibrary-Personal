@@ -5,6 +5,8 @@
  */
 package sg.dvdlibrary.ui;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import sg.dvdlibrary.dto.DVD;
 
@@ -62,7 +64,7 @@ public class DVDLibraryView {
     
     // Get all info for a DVD
     public DVD getNewDVDInfo(String title) {
-        String date = io.readString("Please enter Release Date");
+        LocalDate date = io.readDate("Please enter Release Date");
         String rating = io.readString("Please enter MPAA Rating");
         String director = io.readString("Please enter Director's Name");
         String studio = io.readString("Please enter Studio");
@@ -85,7 +87,7 @@ public class DVDLibraryView {
             // Format method to avoid clunky concatenation
             String dvdInfo = String.format("%s : %s %s %s %s %s %s",
                 currentDVD.getTitle(),
-                currentDVD.getDate(),
+                currentDVD.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                 currentDVD.getMpaaRating(),
                 currentDVD.getDirectorName(),
                 currentDVD.getStudio(),
@@ -153,7 +155,7 @@ public class DVDLibraryView {
                     + "MPAA Rating: %s\n Director Name: %s\n Studio: %s\n "
                     + "User Note: %s\n IMDB Rating: %s",
                 dvd.getTitle(),
-                dvd.getDate(),
+                dvd.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                 dvd.getMpaaRating(),
                 dvd.getDirectorName(),
                 dvd.getStudio(),
@@ -184,7 +186,7 @@ public class DVDLibraryView {
 
     // Get all info but title for editing
     public DVD getEditDVDInfo(String title) {
-        String date = io.readString("Please enter new Release Date");
+        LocalDate date = io.readDate("Please new enter Release Date");
         String rating = io.readString("Please enter new MPAA Rating");
         String director = io.readString("Please enter new Director's Name");
         String studio = io.readString("Please enter new Studio");

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="sg.dvdlibrary.dao.DVDLibraryDaoFileImpTest" time="0.076" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest" time="0.006" tests="6" errors="5" skipped="0" failures="1">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -61,8 +61,59 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="55.0"/>
   </properties>
-  <testcase name="testGetAllDVDs" classname="sg.dvdlibrary.dao.DVDLibraryDaoFileImpTest" time="0.019"/>
-  <testcase name="testGetDVD" classname="sg.dvdlibrary.dao.DVDLibraryDaoFileImpTest" time="0.002"/>
-  <testcase name="testRemoveDVD" classname="sg.dvdlibrary.dao.DVDLibraryDaoFileImpTest" time="0.016"/>
-  <testcase name="testEditDVD" classname="sg.dvdlibrary.dao.DVDLibraryDaoFileImpTest" time="0.018"/>
+  <testcase name="testCreateValidDVD" classname="sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest" time="0.001">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest.testCreateValidDVD(DVDLibraryServiceLayerImpTest.java:83)
+</error>
+    <system-out><![CDATA[Called constructor service
+Done constructor service
+Here
+sg.dvdlibrary.service.DVDLibraryServiceLayerImp@78691363
+]]></system-out>
+  </testcase>
+  <testcase name="testGetAllDVDs" classname="sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest" time="0">
+    <failure message="The one student should be Ada. ==&gt; expected: &lt;true&gt; but was: &lt;false&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: The one student should be Ada. ==> expected: <true> but was: <false>
+	at sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest.testGetAllDVDs(DVDLibraryServiceLayerImpTest.java:157)
+]]></failure>
+    <system-out><![CDATA[Called constructor service
+Done constructor service
+Here
+]]></system-out>
+  </testcase>
+  <testcase name="testCreateDVDInvalidData" classname="sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest" time="0">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest.testCreateDVDInvalidData(DVDLibraryServiceLayerImpTest.java:131)
+</error>
+    <system-out><![CDATA[Called constructor service
+Done constructor service
+Here
+]]></system-out>
+  </testcase>
+  <testcase name="testCreateDuplicateTitleDVD" classname="sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest" time="0">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest.testCreateDuplicateTitleDVD(DVDLibraryServiceLayerImpTest.java:106)
+</error>
+    <system-out><![CDATA[Called constructor service
+Done constructor service
+Here
+]]></system-out>
+  </testcase>
+  <testcase name="testGetDVD" classname="sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest" time="0.001">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest.testGetDVD(DVDLibraryServiceLayerImpTest.java:174)
+</error>
+    <system-out><![CDATA[Called constructor service
+Done constructor service
+Here
+]]></system-out>
+  </testcase>
+  <testcase name="testRemoveDVD" classname="sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest" time="0.001">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest.testRemoveDVD(DVDLibraryServiceLayerImpTest.java:197)
+</error>
+    <system-out><![CDATA[Called constructor service
+Done constructor service
+Here
+]]></system-out>
+  </testcase>
 </testsuite>

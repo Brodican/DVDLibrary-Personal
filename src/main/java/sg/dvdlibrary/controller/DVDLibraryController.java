@@ -6,9 +6,10 @@
 package sg.dvdlibrary.controller;
 
 import java.util.List;
-import sg.dvdlibrary.dao.DVDLibraryDao;
 import sg.dvdlibrary.dao.DVDLibraryPersistenceException;
 import sg.dvdlibrary.dto.DVD;
+import sg.dvdlibrary.service.DVDLibraryDataValidationException;
+import sg.dvdlibrary.service.DVDLibraryDuplicateTitleException;
 import sg.dvdlibrary.service.DVDLibraryServiceLayer;
 import sg.dvdlibrary.ui.DVDLibraryView;
 
@@ -17,22 +18,25 @@ import sg.dvdlibrary.ui.DVDLibraryView;
  * @author utkua
  */
 public class DVDLibraryController {
+
     
     private DVDLibraryView view;
-    private DVDLibraryDao dao;
+    private DVDLibraryServiceLayer service;
     
     /**
      * Constructs a DVDLibraryController.
      * @param view DVDLibraryView that will communicate with the user.
-     * @param dao DVDLibraryDao that will read and store data.
+     * @param service DVDLibraryDao that will read and store data.
      */
-    public DVDLibraryController(DVDLibraryView view, DVDLibraryDao dao) {
+    public DVDLibraryController(DVDLibraryView view, DVDLibraryServiceLayer service) {
         this.view = view;
-        this.dao = dao;
+        this.service = service;
     }
     
     /**
      * Runs the application by putting the menu in a while loop, waiting for user input.
+     * @throws sg.dvdlibrary.service.DVDLibraryDuplicateTitleException
+     * @throws sg.dvdlibrary.service.DVDLibraryDataValidationException
      */
     public void run() {
         // Loop until otherwise specified by user
@@ -97,18 +101,18 @@ public class DVDLibraryController {
     private void createDVD() throws DVDLibraryPersistenceException {
         // Make view display create banner to inform user
         view.displayCreateDVDBanner();
-        String newDvdTitle = view.getTitleChoice();
-        // Do not create if DVD with title already exists
-        if (dao.getDVD(newDvdTitle) != null) {
-            view.displayCreateFailureBanner();
-        } else {
-            // Get object created with user input from view
+        boolean hasErrors = false;
+        do {
+            String newDvdTitle = view.getTitleChoice();
             DVD newDVD = view.getNewDVDInfo(newDvdTitle);
-            // Make dao add to list of DVDs
-            dao.addDVD(newDVD.getTitle(), newDVD);
-            // Make view display success banner to inform user
-            view.displayCreateSuccessBanner();
-        }
+            try {
+                service.createDVD(newDVD);
+                view.displayCreateSuccessBanner();
+                hasErrors = false;
+            } catch (DVDLibraryDataValidationException | DVDLibraryDuplicateTitleException e) {
+                hasErrors = true;
+            }
+        } while (hasErrors);
     }
     
     /**
@@ -117,9 +121,18 @@ public class DVDLibraryController {
      * @throws DVDLibraryPersistenceException 
      */
     private void createDVDEdit(String title) throws DVDLibraryPersistenceException {
-        DVD newDVD = view.getEditDVDInfo(title);
-        dao.addDVD(newDVD.getTitle(), newDVD);
-        view.displayEditSuccessBanner();
+        boolean hasErrors = false;
+        do {
+            DVD newDVD = view.getEditDVDInfo(title);
+            try {
+                service.createDVD(newDVD);
+                view.displayEditSuccessBanner();
+                hasErrors = false;
+            } catch (DVDLibraryDataValidationException | DVDLibraryDuplicateTitleException e) {
+                hasErrors = true;
+            }
+        } while (hasErrors);
+        
     }
 
     /**
@@ -128,7 +141,7 @@ public class DVDLibraryController {
      */
     private void listDVDs() throws DVDLibraryPersistenceException {
         view.displayDisplayAllBanner();
-        List<DVD> dvdList = dao.getAllDVDs();
+        List<DVD> dvdList = service.getAllDVDs();
         view.displayDVDList(dvdList);
     }
 
@@ -139,7 +152,7 @@ public class DVDLibraryController {
     private void viewDVD() throws DVDLibraryPersistenceException {
         view.displayDisplayDVDBanner();
         String title = view.getTitleChoice();
-        DVD dvd = dao.getDVD(title);
+        DVD dvd = service.getDVD(title);
         view.displayDVD(dvd);
     }
 
@@ -150,7 +163,7 @@ public class DVDLibraryController {
     private void removeDVD() throws DVDLibraryPersistenceException {
         view.displayRemoveDVDBanner();
         String title = view.getTitleChoice();
-        DVD removedDVD = dao.removeDVD(title);
+        DVD removedDVD = service.removeDVD(title);
         view.displayRemoveResult(removedDVD);
     }
     
@@ -161,7 +174,7 @@ public class DVDLibraryController {
     private void editDVD() throws DVDLibraryPersistenceException {
         view.displayEditDVDBanner();
         String title = view.getTitleChoice();
-        DVD editedDVD = dao.getDVD(title);
+        DVD editedDVD = service.getDVD(title);
         view.displayDVD(editedDVD);
         if (editedDVD != null) {
             createDVDEdit(title);
@@ -174,8 +187,8 @@ public class DVDLibraryController {
      */
     private void editDvdField() throws DVDLibraryPersistenceException {
         // Get title - if it doesn't exist, indicate failure to user
-        String title = view.getTitleChoice();
-        if (dao.getDVD(title) == null) {
+        /*String title = view.getTitleChoice();
+        if (service.getDVD(title) == null) {
             view.displayEditFailureBanner();
             return;
         }
@@ -194,36 +207,36 @@ public class DVDLibraryController {
             case 1:
                 fieldString = "Release Date";
                 newVal = view.getEditValue(fieldString);
-                dao.setFieldDate(newVal, title);
+                service.setFieldDate(LocalDate.parse(newVal, DateTimeFormatter.ofPattern("dd/MM/yyyy")), title);
                 break;
             case 2:
                 fieldString = "MPAA Rating";
                 newVal = view.getEditValue(fieldString);
-                dao.setFieldRating(newVal, title);
+                service.setFieldRating(newVal, title);
                 break;
             case 3:
                 fieldString = "Director's Name";
                 newVal = view.getEditValue(fieldString);
-                dao.setFieldDirectorName(newVal, title);
+                service.setFieldDirectorName(newVal, title);
                 break;
             case 4:
                 fieldString = "Studio";
                 newVal = view.getEditValue(fieldString);
-                dao.setFieldStudio(newVal, title);
+                service.setFieldStudio(newVal, title);
                 break;
             case 5:
                 fieldString = "User Rating/Note";
                 newVal = view.getEditValue(fieldString);
-                dao.setFieldRating(newVal, title);
+                service.setFieldRating(newVal, title);
                 break;
             case 6:
                 fieldString = "IMDB Rating";
                 newValDouble = view.getEditValueImdb(fieldString);
-                dao.setFieldImdb(newValDouble, title);
+                service.setFieldImdb(newValDouble, title);
                 break;
         }
         
-        view.displayEditSuccessBanner();
+        view.displayEditSuccessBanner();*/
     }
     
     /**
@@ -232,7 +245,7 @@ public class DVDLibraryController {
      */
     private void countDVDs() throws DVDLibraryPersistenceException {
         view.displayCountDVDBanner();
-        view.displayCount(dao.countDVDs());
+        view.displayCount(service.getAllDVDs().size());
     }
 
     /**

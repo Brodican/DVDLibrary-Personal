@@ -11,11 +11,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import sg.dvdlibrary.dto.DVD;
 
 /**
@@ -106,7 +113,7 @@ public class DVDLibraryDaoFileImp implements DVDLibraryDao {
     // Set methods for each field
     // Must be seperate as cannot have logic in DAO
     @Override
-    public void setFieldDate(String value, String title) throws DVDLibraryPersistenceException {
+    public void setFieldDate(LocalDate value, String title) throws DVDLibraryPersistenceException {
         readLibrary();
         // get DVD, set the date, put in dvds, then write
         DVD dvdToEdit = dvds.get(title);
@@ -183,7 +190,7 @@ public class DVDLibraryDaoFileImp implements DVDLibraryDao {
 
         try {
             // Index 1 - Release date
-            dvdFromFile.setDate(dvdFields[1]);
+            dvdFromFile.setDate(LocalDate.parse(dvdFields[1], DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
             // Index 2 - MPAA rating
             dvdFromFile.setMpaaRating(dvdFields[2]);
@@ -259,7 +266,7 @@ public class DVDLibraryDaoFileImp implements DVDLibraryDao {
         // Add rest of properties in the correct order:
 
         // Release date
-        dvdAsText += aDVD.getDate()+ DELIMITER;
+        dvdAsText += aDVD.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + DELIMITER;
 
         // Age rating
         dvdAsText += aDVD.getMpaaRating()+ DELIMITER;
@@ -312,7 +319,65 @@ public class DVDLibraryDaoFileImp implements DVDLibraryDao {
     // Return size of hashmap
     @Override
     public int countDVDs() throws DVDLibraryPersistenceException {
+        readLibrary();
         return dvds.size();
+    }
+
+    @Override
+    public List<DVD> getAllWithin(int years) throws DVDLibraryPersistenceException {
+        ArrayList<DVD> list = new ArrayList<>(dvds.values());
+        return list.stream().filter((d) -> d.getDate().compareTo(LocalDate.now()) < years)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DVD> getAllWithMpaa(String mpaa) throws DVDLibraryPersistenceException {
+        ArrayList<DVD> list = new ArrayList<>(dvds.values());
+        return list.stream().filter((d) -> d.getMpaaRating().equals(mpaa))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<String, List<DVD>> getAllWithDirector(String dir) throws DVDLibraryPersistenceException {
+        ArrayList<DVD> list = new ArrayList<>(dvds.values());
+        // For organization
+        // We want to return a map of lists, where seperate list for each MPAA rating
+        Stream<DVD> listStream = list.stream().filter((d) -> d.getMpaaRating().equals(dir));
+        return listStream.collect(Collectors.groupingBy((d) -> d.getMpaaRating()));
+    }
+
+    @Override
+    public List<DVD> getAllByStudio(String studio) throws DVDLibraryPersistenceException {
+        ArrayList<DVD> list = new ArrayList<>(dvds.values());
+        return list.stream().filter((d) -> d.getStudio().equals(studio))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public BigDecimal averageAge() throws DVDLibraryPersistenceException {
+        ArrayList<DVD> list = new ArrayList<>(dvds.values());
+        float averageAge = (float) list.stream().mapToInt((d) -> d.getDate().compareTo(LocalDate.now())).average().getAsDouble();
+        return new BigDecimal(averageAge);
+    }
+
+    @Override
+    public DVD getNewest() throws DVDLibraryPersistenceException {
+        ArrayList<DVD> list = new ArrayList<>(dvds.values());
+        return list.stream().max(Comparator.comparing((d) -> d.getDate().compareTo(LocalDate.now()))).get();
+    }
+
+    @Override
+    public DVD getOldest() throws DVDLibraryPersistenceException {
+        ArrayList<DVD> list = new ArrayList<>(dvds.values());
+        return list.stream().min(Comparator.comparing((d) -> d.getDate().compareTo(LocalDate.now()))).get();
+    }
+
+    @Override
+    public BigDecimal averageNotes() throws DVDLibraryPersistenceException {
+        ArrayList<DVD> list = new ArrayList<>(dvds.values());
+        float averageNotes = (float) list.stream().mapToInt((dvd) -> dvd.getNote().split(",").length)
+                .average().getAsDouble();
+        return new BigDecimal(averageNotes);
     }
     
 }

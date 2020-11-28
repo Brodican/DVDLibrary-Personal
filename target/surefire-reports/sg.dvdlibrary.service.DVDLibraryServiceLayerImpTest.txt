@@ -1,0 +1,28 @@
+-------------------------------------------------------------------------------
+Test set: sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 1, Errors: 5, Skipped: 0, Time elapsed: 0.006 s <<< FAILURE! - in sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest
+testCreateValidDVD  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NullPointerException
+	at sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest.testCreateValidDVD(DVDLibraryServiceLayerImpTest.java:83)
+
+testGetAllDVDs  Time elapsed: 0 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: The one student should be Ada. ==> expected: <true> but was: <false>
+	at sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest.testGetAllDVDs(DVDLibraryServiceLayerImpTest.java:157)
+
+testCreateDVDInvalidData  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest.testCreateDVDInvalidData(DVDLibraryServiceLayerImpTest.java:131)
+
+testCreateDuplicateTitleDVD  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest.testCreateDuplicateTitleDVD(DVDLibraryServiceLayerImpTest.java:106)
+
+testGetDVD  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NullPointerException
+	at sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest.testGetDVD(DVDLibraryServiceLayerImpTest.java:174)
+
+testRemoveDVD  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NullPointerException
+	at sg.dvdlibrary.service.DVDLibraryServiceLayerImpTest.testRemoveDVD(DVDLibraryServiceLayerImpTest.java:197)
+

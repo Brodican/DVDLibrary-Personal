@@ -5,6 +5,7 @@
  */
 package sg.dvdlibrary.dto;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -16,7 +17,7 @@ public class DVD {
     // Variables with all info to be held
     // Title will not change
     private String title;
-    private String date;
+    private LocalDate date;
     private String mpaaRating;
     private String directorName;
     private String studio;
@@ -43,7 +44,7 @@ public class DVD {
      * Gets the date
      * @return 
      */
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -59,12 +60,12 @@ public class DVD {
      * Sets the date
      * @param date 
      */
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
     /**
-     * Sets the MPaa Rating
+     * Sets the MPAA Rating
      * @param mpaaRating 
      */
     public void setMpaaRating(String mpaaRating) {

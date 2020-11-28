@@ -5,7 +5,10 @@
  */
 package sg.dvdlibrary.dao;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import sg.dvdlibrary.dto.DVD;
 
 /**
@@ -73,7 +76,7 @@ public interface DVDLibraryDao {
     
     // Set method for each field of DVD.
     // Seperate to avoid switch in DAO.
-    void setFieldDate(String value, String title)
+    void setFieldDate(LocalDate value, String title)
      throws DVDLibraryPersistenceException;
 
     void setFieldRating(String value, String title)
@@ -90,5 +93,29 @@ public interface DVDLibraryDao {
     
     void setFieldImdb(double value, String title)
      throws DVDLibraryPersistenceException;
+    
+    List<DVD> getAllWithin(int years)
+            throws DVDLibraryPersistenceException;
+    
+    List<DVD> getAllWithMpaa(String mpaa)
+            throws DVDLibraryPersistenceException;
+    
+    Map<String, List<DVD>> getAllWithDirector(String dir)
+            throws DVDLibraryPersistenceException;
+    
+    List<DVD> getAllByStudio(String studio)
+            throws DVDLibraryPersistenceException;
+    
+    BigDecimal averageAge()
+            throws DVDLibraryPersistenceException;
+    
+    DVD getNewest()
+            throws DVDLibraryPersistenceException;
+    
+    DVD getOldest()
+            throws DVDLibraryPersistenceException;
+    
+    BigDecimal averageNotes()
+            throws DVDLibraryPersistenceException;
     
 }

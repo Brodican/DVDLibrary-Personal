@@ -6,6 +6,7 @@
 package sg.dvdlibrary.service;
 
 import java.util.List;
+import sg.dvdlibrary.dao.DVDLibraryAuditDao;
 import sg.dvdlibrary.dao.DVDLibraryDao;
 import sg.dvdlibrary.dao.DVDLibraryPersistenceException;
 import sg.dvdlibrary.dto.DVD;
@@ -16,12 +17,18 @@ import sg.dvdlibrary.dto.DVD;
  */
 public class DVDLibraryServiceLayerImp implements DVDLibraryServiceLayer {
 
+    DVDLibraryAuditDao auditDao;
     DVDLibraryDao dao;
     
-    public DVDLibraryServiceLayerImp(DVDLibraryDao dao) {
+    public DVDLibraryServiceLayerImp(DVDLibraryAuditDao auditDao, DVDLibraryDao dao) {
+        System.out.println("Called constructor service");
+        this.auditDao = auditDao;
         this.dao = dao;
+        System.out.println("Done constructor service");
     }
     
+    // Effectively just checking if the student already exists
+    // Then, check if the object to be added
     @Override
     public void createDVD(DVD dvd) throws
             DVDLibraryDuplicateTitleException,
@@ -32,12 +39,13 @@ public class DVDLibraryServiceLayerImp implements DVDLibraryServiceLayer {
         // If so, we're all done here - 
         // throw a ClassRosterDuplicateIdException
         if (dao.getDVD(dvd.getTitle()) != null) {
+            System.out.println("Error createDVD");
             throw new DVDLibraryDuplicateTitleException(
                     "ERROR: Could not create DVD.  DVD Title "
                     + dvd.getTitle()
                     + " already exists");
         }
-
+        System.out.println("Called createDVD");
         // Now validate all the fields on the given DVD object.  
         // This method will throw an
         // exception if any of the validation rules are violated.
@@ -66,9 +74,8 @@ public class DVDLibraryServiceLayerImp implements DVDLibraryServiceLayer {
     
     private void validateDVDData(DVD dvd) throws
             DVDLibraryDataValidationException {
-
+        System.out.println("Called validate");
         if (dvd.getDate() == null
-                || dvd.getDate().trim().length() == 0
                 || dvd.getMpaaRating() == null
                 || dvd.getMpaaRating().trim().length() == 0
                 || dvd.getStudio() == null
